@@ -1,0 +1,13 @@
+services:
+  tma1:
+    environment:
+      HOME: ${HOME:?HOME must be set to your host home directory}
+      TMA1_RUNTIME_UID: ${TMA1_RUNTIME_UID:?Set TMA1_RUNTIME_UID to the output of id -u}
+      TMA1_RUNTIME_GID: ${TMA1_RUNTIME_GID:?Set TMA1_RUNTIME_GID to the output of id -g}
+    volumes:
+      - type: bind
+        source: ${HOME:?HOME must be set to your host home directory}/.codex/sessions
+        target: ${HOME:?HOME must be set to your host home directory}/.codex/sessions
+        read_only: true
+        bind:
+          create_host_path: false

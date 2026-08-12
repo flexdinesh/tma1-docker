@@ -67,7 +67,7 @@ FROM debian:bookworm-slim AS runtime
 ARG GREPTIMEDB_VERSION
 
 RUN apt-get update && \
-  apt-get install -y --no-install-recommends ca-certificates curl && \
+  apt-get install -y --no-install-recommends ca-certificates curl gosu && \
   rm -rf /var/lib/apt/lists/* && \
   groupadd --gid 10001 tma1 && \
   useradd --uid 10001 --gid 10001 --create-home \
@@ -82,9 +82,11 @@ ENV HOME=/home/tma1 \
   TMA1_HOST=0.0.0.0 \
   TMA1_PORT=14318 \
   TMA1_DATA_DIR=/var/lib/tma1 \
-  TMA1_GREPTIMEDB_VERSION=${GREPTIMEDB_VERSION}
+  TMA1_GREPTIMEDB_VERSION=${GREPTIMEDB_VERSION} \
+  TMA1_RUNTIME_UID=10001 \
+  TMA1_RUNTIME_GID=10001
 
-USER 10001:10001
+USER 0:0
 WORKDIR /home/tma1
 
 EXPOSE 14318
