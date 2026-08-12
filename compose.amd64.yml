@@ -1,0 +1,31 @@
+services:
+  tma1:
+    platform: linux/amd64
+    image: tma1:amd64
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        TMA1_VERSION: v0.2.0-alpha13
+        GREPTIMEDB_VERSION: v1.1.3
+    environment:
+      TMA1_HOST: 0.0.0.0
+      TMA1_PORT: "14318"
+      TMA1_DATA_DIR: /var/lib/tma1
+      TMA1_GREPTIMEDB_VERSION: v1.1.3
+    ports:
+      - "127.0.0.1:14318:14318"
+    volumes:
+      - tma1-data-amd64:/var/lib/tma1
+    init: true
+    restart: unless-stopped
+    stop_grace_period: 30s
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "--silent", "--show-error", "http://localhost:14318/status"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 90s
+
+volumes:
+  tma1-data-amd64:

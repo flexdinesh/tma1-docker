@@ -1,0 +1,5 @@
+# Keep the Docker build context limited to image-packaging files.
+*
+!Dockerfile
+!scripts/
+!scripts/entrypoint.sh
